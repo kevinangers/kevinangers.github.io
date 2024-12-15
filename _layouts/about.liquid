@@ -40,41 +40,143 @@ layout: default
 
     <div class="clearfix">{{ content }}</div>
 
+  <!-- Education Section -->
+  <section id="education" class="education">
+    <h3>Education</h3>
+    <div class="education-list">
+      {% for edu in site.education %}
+        <table style="padding-top: 20px; width: 100%; border: 0px; border-spacing: 0px; border-collapse: separate; margin-right: auto; margin-left: auto;">
+          <tbody>
+            <tr>
+              <!-- Image Column -->
+              <td style="padding-right: 20px; width: 20%; vertical-align: middle;">
+                {% if edu.image %}
+                  <img src="{{ edu.image | relative_url }}" alt="{{ edu.title }}" width="160" height="160">
+                {% else %}
+
+                {% endif %}
+              </td>
+              
+              <!-- Text Column -->
+              <td width="75%" valign="middle">
+                <p>
+                  <strong>{{ edu.title }}</strong>
+                </p>
+                <p1>
+                    <a href="{{ edu.degree_url }}">{{ edu.degree }}</a> | {{ edu.years }}
+                  <br>
+                  <strong>{{ edu.description }}</strong>
+                </p1>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Publications -->
+  <section id="publications" class="publications">
+    <h3>Publications</h3>
+    <div class="publications-list">
+      {% for edu in site.publications %}
+        <table style="padding-top: 20px; width: 100%; border: 0px; border-spacing: 0px; border-collapse: separate; margin-right: auto; margin-left: auto;">
+          <tbody>
+            <tr>
+              <!-- Image Column -->
+              <td style="padding-right: 20px; width: 20%; vertical-align: middle;">
+                {% if edu.image %}
+                  <img src="{{ edu.image | relative_url }}" alt="{{ edu.title }}" width="160" height="160">
+                {% else %}
+
+                {% endif %}
+              </td>
+              
+              <!-- Text Column -->
+              <td width="75%" valign="middle">
+                <p>
+                  <strong>{{ edu.title }}</strong>
+                  <br>
+                  {{ edu.authors }} 
+                  <br>
+                  <i>
+                  {% if edu.submission_url %}
+                    <a href="{{ edu.submission_url }}">{{edu.submission}}</i>,</a>
+                  {% else %}
+                    {{edu.submission}}</i>,
+                  {% endif %} {{ edu.year }} ({{edu.status}})
+                </p>
+                <p1>
+                  {{ edu.description }}
+                </p1>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      {% endfor %}
+    </div>
+  </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+      <h3>Projects</h3>
+      <div class="projects-list">
+        {% for project in site.projects %}
+          <div class="project-card">
+            <div class="project-image">
+              {% if project.img %}
+                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" width="130" height="130">
+              {% else %}
+                
+              {% endif %}
+            </div>
+            <div class="project-content">
+              <h3>{{ project.title }}</h3>
+              <p class="project-meta">
+                [{{ project.category | capitalize }}] {% if project.related_publications %} @ Related Publications {% endif %}
+              </p>
+              <p class="project-description">{{ project.description }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+
     <!-- News -->
-    {% if page.news and site.announcements.enabled %}
-      <h2>
-        <a href="{{ '/news/' | relative_url }}" style="color: inherit">news</a>
-      </h2>
-      {% include news.liquid limit=true %}
-    {% endif %}
+    <!--{% if page.news and site.announcements.enabled %}-->
+    <!--  <h2>-->
+    <!--    <a href="{{ '/news/' | relative_url }}" style="color: inherit">news</a>-->
+    <!--  </h2>-->
+    <!--  {% include news.liquid limit=true %}-->
+    <!--{% endif %}-->
 
     <!-- Latest posts -->
-    {% if site.latest_posts.enabled %}
-      <h2>
-        <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
-      </h2>
-      {% include latest_posts.liquid %}
-    {% endif %}
+    <!-- {% if site.latest_posts.enabled %}-->
+    <!--   <h2>-->
+    <!--     <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>-->
+    <!--   </h2>-->
+    <!--   {% include latest_posts.liquid %}-->
+    <!-- {% endif %}-->
 
     <!-- Selected papers -->
-    {% if page.selected_papers %}
-      <h2>
-        <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
-      </h2>
-      {% include selected_papers.liquid %}
-    {% endif %}
+    <!--{% if page.selected_papers %}-->
+    <!--  <h2>-->
+    <!--    <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>-->
+    <!--  </h2>-->
+    <!--  {% include selected_papers.liquid %}-->
+    <!--{% endif %}-->
 
     <!-- Social -->
-    {% if page.social %}
-      <div class="social">
-        <div class="contact-icons">{% include social.liquid %}</div>
+    <!-- {% if page.social %}-->
+    <!--   <div class="social">-->
+    <!--     <div class="contact-icons">{% include social.liquid %}</div>-->
+    <!--     <div class="contact-note">{{ site.contact_note }}</div>-->
+    <!--   </div>-->
+    <!-- {% endif %}-->
 
-        <div class="contact-note">{{ site.contact_note }}</div>
-      </div>
-    {% endif %}
-
-    {% if site.newsletter.enabled and site.footer_fixed %}
-      {% include scripts/newsletter.liquid center=true %}
-    {% endif %}
+    <!--{% if site.newsletter.enabled and site.footer_fixed %}-->
+    <!--  {% include scripts/newsletter.liquid center=true %}-->
+    <!--{% endif %}-->
   </article>
 </div>
