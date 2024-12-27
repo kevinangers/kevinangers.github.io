@@ -2,7 +2,7 @@
 layout: page
 title: Transformer Language Model from Scratch
 description: Implemented a Transformer based language model from scratch in PyTorch for the task of machine translation, and trained on a corpus of English-French text for performance evaluation using the BLEU metric.
-img: assets/img/3.jpg
+img: assets/img/transformer.png
 importance: 2
 category: work
 giscus_comments: true

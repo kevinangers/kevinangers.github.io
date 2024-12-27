@@ -5,9 +5,9 @@ layout: default
   <header class="post-header">
     <h1 class="post-title">
       {% if site.title == 'blank' %}
-        <span class="font-weight-bold">{{ site.first_name }} {{ site.last_name }}</span>
+      <span class="font-weight-bold">{{ site.first_name }} {{ site.last_name }}</span>
       {% else %}
-        {{ site.title }}
+      {{ site.title }}
       {% endif %}
     </h1>
     <p class="desc">{{ page.subtitle }}</p>
@@ -15,54 +15,57 @@ layout: default
 
   <article>
     {% if page.profile %}
-      <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
-        {% if page.profile.image %}
-          {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-          {% if page.profile.image_circular %}
-            {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
-          {% else %}
-            {% assign profile_image_class = 'img-fluid z-depth-1
+    <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
+      {% if page.profile.image %}
+      {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
+      {% if page.profile.image_circular %}
+      {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
+      {% else %}
+      {% assign profile_image_class = 'img-fluid z-depth-1
       rounded' %}
-          {% endif %}
-          {% capture sizes %}(min-width: {{ site.max_width }}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width: 576px)
+      {% endif %}
+      {% capture sizes %}(min-width: {{ site.max_width }}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width:
+      576px)
       30vw, 95vw"{% endcapture %}
-          {%
-            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
-            cache_bust=true
-          %}
-        {% endif %}
-        {% if page.profile.more_info %}
-          <div class="more-info">{{ page.profile.more_info }}</div>
-        {% endif %}
-      </div>
+      {%
+      include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes
+      alt=page.profile.image
+      cache_bust=true
+      %}
+      {% endif %}
+      {% if page.profile.more_info %}
+      <div class="more-info">{{ page.profile.more_info }}</div>
+      {% endif %}
+    </div>
     {% endif %}
 
     <div class="clearfix">{{ content }}</div>
 
-  <!-- Education Section -->
-  <section id="education" class="education">
-    <h3>Education</h3>
-    <div class="education-list">
-      {% for edu in site.education %}
-        <table style="padding-top: 20px; width: 100%; border: 0px; border-spacing: 0px; border-collapse: separate; margin-right: auto; margin-left: auto;">
+    <!-- Education Section -->
+    <section id="education" class="education">
+      <h3>Education</h3>
+      <div class="education-list">
+        {% for edu in site.education %}
+        <table
+          style="padding-top: 20px; width: 100%; border: 0px; border-spacing: 0px; border-collapse: separate; margin-right: auto; margin-left: auto;">
           <tbody>
             <tr>
               <!-- Image Column -->
               <td style="padding-right: 20px; width: 20%; vertical-align: middle;">
                 {% if edu.image %}
-                  <img src="{{ edu.image | relative_url }}" alt="{{ edu.title }}" width="160" height="160">
+                <img src="{{ edu.image | relative_url }}" alt="{{ edu.title }}" width="160" height="160">
                 {% else %}
 
                 {% endif %}
               </td>
-              
+
               <!-- Text Column -->
               <td width="75%" valign="middle">
                 <p>
                   <strong>{{ edu.title }}</strong>
                 </p>
                 <p1>
-                    <a href="{{ edu.degree_url }}">{{ edu.degree }}</a> | {{ edu.years }}
+                  <a href="{{ edu.degree_url }}">{{ edu.degree }}</a> | {{ edu.years }}
                   <br>
                   <strong>{{ edu.description }}</strong>
                 </p1>
@@ -70,40 +73,42 @@ layout: default
             </tr>
           </tbody>
         </table>
-      {% endfor %}
-    </div>
-  </section>
+        {% endfor %}
+      </div>
+    </section>
 
-  <!-- Publications -->
-  <section id="publications" class="publications">
-    <h3>Publications</h3>
-    <div class="publications-list">
-      {% for edu in site.publications %}
-        <table style="padding-top: 20px; width: 100%; border: 0px; border-spacing: 0px; border-collapse: separate; margin-right: auto; margin-left: auto;">
+    <!-- Publications -->
+    <section id="publications" class="publications">
+      <h3>Publications</h3>
+      <div class="publications-list">
+        {% for edu in site.publications %}
+        <table
+          style="padding-top: 20px; width: 100%; border: 0px; border-spacing: 0px; border-collapse: separate; margin-right: auto; margin-left: auto;">
           <tbody>
             <tr>
               <!-- Image Column -->
               <td style="padding-right: 20px; width: 20%; vertical-align: middle;">
                 {% if edu.image %}
-                  <img src="{{ edu.image | relative_url }}" alt="{{ edu.title }}" width="160" height="160">
+                <img src="{{ edu.image | relative_url }}" alt="{{ edu.title }}" width="160" height="160">
                 {% else %}
 
                 {% endif %}
               </td>
-              
+
               <!-- Text Column -->
               <td width="75%" valign="middle">
                 <p>
                   <strong>{{ edu.title }}</strong>
                   <br>
-                  {{ edu.authors }} 
+                  <span id="authors", style="color: gray;">{{ edu.authors }}</span>
                   <br>
                   <i>
-                  {% if edu.submission_url %}
+                    {% if edu.submission_url %}
                     <a href="{{ edu.submission_url }}">{{edu.submission}}</i>,</a>
                   {% else %}
-                    {{edu.submission}}</i>,
+                  {{edu.submission}}</i>,
                   {% endif %} {{ edu.year }} ({{edu.status}})
+                  <p style="font-size: smaller; color: gray;">PAPER / PROJECT PAGE (Coming Soon!)/ CODE (Coming Soon!) / <a href="assets/pdf/RoboCulture_Poster_PRINT_FINAL.pdf" target="_blank">POSTER</a></p>
                 </p>
                 <p1>
                   {{ edu.description }}
@@ -112,27 +117,39 @@ layout: default
             </tr>
           </tbody>
         </table>
-      {% endfor %}
-    </div>
-  </section>
+        {% endfor %}
+      </div>
+    </section>
+
+    <script>
+      // Highlight the author "Kevin Angers"
+      const authorsElement = document.getElementById('authors');
+      if (authorsElement) {
+        authorsElement.innerHTML = authorsElement.innerHTML.replace(
+          /\bKevin Angers\b/g,
+          '<strong style="color: lightsteelblue;">Kevin Angers</strong>'
+        );
+      }
+    </script>
 
     <!-- Projects Section -->
     <section id="projects" class="projects">
-    <h3>Projects</h3>
-    <div class="projects-list">
-      {% for proj in site.projects %}
-        <table style="padding-top: 20px; width: 100%; border: 0px; border-spacing: 0px; border-collapse: separate; margin-right: auto; margin-left: auto;">
+      <h3>Projects</h3>
+      <div class="projects-list">
+        {% for proj in site.projects %}
+        <table
+          style="padding-top: 20px; width: 100%; border: 0px; border-spacing: 0px; border-collapse: separate; margin-right: auto; margin-left: auto;">
           <tbody>
             <tr>
               <!-- Image Column -->
               <td style="padding-right: 20px; width: 20%; vertical-align: middle;">
                 {% if proj.img %}
-                  <img src="{{ proj.img | relative_url }}" alt="{{ proj.title }}" width="160" height="160">
+                <img src="{{ proj.img | relative_url }}" alt="{{ proj.title }}" width="160" height="160">
                 {% else %}
 
                 {% endif %}
               </td>
-              
+
               <!-- Text Column -->
               <td width="75%" valign="middle">
                 <p>
@@ -145,9 +162,9 @@ layout: default
             </tr>
           </tbody>
         </table>
-      {% endfor %}
-    </div>
-  </section>
+        {% endfor %}
+      </div>
+    </section>
 
 
     <!-- News -->

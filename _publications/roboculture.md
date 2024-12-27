@@ -14,7 +14,7 @@ submission: "Matter"
 submission_url: https://www.cell.com/matter/home
 status: "Submitted"
 description:
-  RoboCulture is a robotics platform for automating biomedical experiments using general-purpose manipulators.
-image: "assets/img/publication_preview/roboculture.png"
+  RoboCulture is a robotics platform enabling the automation of liquid handling-based biological experiments with a Franka Panda robot manipulator. Computer vision strategies are used to facilitate robust pipetting amidst small targets at unknown positions.
+image: "assets/img/roboculture_gif.gif"
 paper_url: ""
 ---
