@@ -13,8 +13,7 @@ year: "2024"
 submission: "Matter"
 submission_url: https://www.cell.com/matter/home
 status: "Submitted"
-description:
-  RoboCulture is a robotics platform enabling the automation of liquid handling-based biological experiments using a Franka Panda robot manipulator. Computer vision strategies are used to facilitate robust pipetting amidst small targets at unknown positions.
+description: RoboCulture is a robotics platform enabling the automation of liquid handling-based biological experiments using a Franka Panda robot manipulator. Computer vision strategies are used to facilitate robust pipetting amidst small targets at unknown positions.
 image: "assets/img/roboculture_gif.gif"
 paper_url: ""
 ---
