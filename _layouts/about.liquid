@@ -30,7 +30,7 @@ layout: default
       {%
       include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes
       alt=page.profile.image
-      cache_bust=false
+      cache_bust=true
       %}
       {% endif %}
       {% if page.profile.more_info %}
@@ -98,17 +98,18 @@ layout: default
               <!-- Text Column -->
               <td width="75%" valign="middle">
                 <p>
-                  <strong>{{ edu.title }}</strong>
-                  <br>
-                  <span id="authors", style="color: gray;">{{ edu.authors }}</span>
-                  <br>
-                  <i>
-                    {% if edu.submission_url %}
-                    <a href="{{ edu.submission_url }}">{{edu.submission}}</i>,</a>
+                  <strong>{{ edu.title }}</strong><br>
+                  <span id="authors" style="color: gray;">{{ edu.authors }}</span><br>
+                  {% if edu.submission_url %}
+                    <i><a href="{{ edu.submission_url }}">{{ edu.submission }}</a></i>,
                   {% else %}
-                  {{edu.submission}}</i>,
-                  {% endif %} {{ edu.year }} ({{edu.status}})
-                  <p style="font-size: smaller; color: gray;">PAPER / PROJECT PAGE (Coming Soon!)/ CODE (Coming Soon!) / <a href="assets/pdf/RoboCulture_Poster_PRINT_FINAL.pdf" target="_blank">POSTER</a></p>
+                    <i>{{ edu.submission }}</i>,
+                  {% endif %}
+                  {{ edu.year }} ({{ edu.status }})
+                </p>
+                <p style="font-size: smaller; color: gray;">
+                  PAPER / PROJECT PAGE (Coming Soon!) / CODE (Coming Soon!) / 
+                  <a href="assets/pdf/RoboCulture_Poster_PRINT_FINAL.pdf" target="_blank">POSTER</a>
                 </p>
                 <p1>
                   {{ edu.description }}
