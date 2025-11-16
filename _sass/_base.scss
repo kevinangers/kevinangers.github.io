@@ -35,6 +35,13 @@ table {
   }
 }
 
+.education-list table tr:hover,
+.publications-list table tr:hover,
+.experience-list table tr:hover,
+.projects-list table tr:hover {
+  background-color: transparent !important; /* keep hover off for static rows */
+}
+
 a,
 table.table a {
   color: var(--global-theme-color);
@@ -382,25 +389,37 @@ ul.task-list input[type="checkbox"] {
 .social {
   text-align: center;
 
-  .contact-icons {
-    font-size: 4rem;
+  .contact-links {
+    font-size: 1rem;
+    font-weight: 500;
 
     a {
-      i::before {
-        color: var(--global-text-color);
-        transition-property: all 0.2s ease-in-out;
-      }
+      color: var(--global-highlight-color);
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
 
       &:hover {
-        i::before {
           color: var(--global-theme-color);
-        }
       }
     }
   }
 
   .contact-note {
     font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+}
+
+.entry-description {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
   }
 }
 

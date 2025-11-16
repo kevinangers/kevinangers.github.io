@@ -20,9 +20,6 @@
             {{- site.title -}}
           {% endif %}
         </a>
-      {% elsif site.enable_navbar_social %}
-        <!-- Social Icons -->
-        <div class="navbar-brand social">{% include social.liquid %}</div>
       {% endif %}
       <!-- Navbar Toggle -->
       <button
@@ -46,15 +43,21 @@
             {% if page.permalink == '/' %} {% assign about_title = page.title %} {% endif %}
           {% endfor %}
 
-          <!-- About -->
-          <li class="nav-item {% if page.permalink == '/' %}active{% endif %}">
-            <a class="nav-link" href="{{ '/' | relative_url }}">
-              {{- about_title }}
-              {% if page.permalink == '/' %}
-                <span class="sr-only">(current)</span>
-              {% endif %}
-            </a>
-          </li>
+          <!-- About page section links -->
+          {% assign about_nav_sections = "About:top|Education:education|Publications:publications|Experience:experience|Projects:projects" | split: "|" %}
+          {% for section in about_nav_sections %}
+            {% assign section_parts = section | split: ":" %}
+            {% assign section_label = section_parts[0] %}
+            {% assign section_id = section_parts[1] %}
+            <li class="nav-item {% if page.permalink == '/' and section_id == 'top' %}active{% endif %}">
+              <a class="nav-link" href="{{ '/' | relative_url }}#{{ section_id }}">
+                {{ section_label }}
+                {% if page.permalink == '/' and section_id == 'top' %}
+                  <span class="sr-only">(current)</span>
+                {% endif %}
+              </a>
+            </li>
+          {% endfor %}
 
           <!-- Other pages -->
           {% assign sorted_pages = site.pages | sort: 'nav_order' %}

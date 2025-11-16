@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-<div class="post">
+<div class="post" id="top">
   <header class="post-header">
     <h1 class="post-title">
       {% if site.title == 'blank' %}
@@ -40,13 +40,23 @@ layout: default
           <div class="more-info">{{ page.profile.more_info }}</div>
         {% endif %}
       </div>
-    {% endif %}
+  {% endif %}
 
-    <div class="clearfix">{{ content }}</div>
+  <div class="clearfix">{{ content }}</div>
 
-    <!-- Education Section -->
-    <section id="education" class="education">
-      <h3>Education</h3>
+  {% capture about_social_links %}{% include social_text.liquid %}{% endcapture %}
+  {% if about_social_links contains '<a' %}
+    <div class="social about-social">
+      <div class="contact-links">{{ about_social_links | strip }}</div>
+      {% if site.contact_note %}
+        <div class="contact-note">{{ site.contact_note }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <!-- Education Section -->
+  <section id="education" class="education">
+    <h3>Education</h3>
       <div class="education-list">
         {% for edu in site.education %}
           <table
@@ -65,8 +75,10 @@ layout: default
 
                 <!-- Text Column -->
                 <td width="75%" valign="middle">
+                  {% capture edu_title_html %}{{ edu.title | markdownify }}{% endcapture %}
+                  {% assign edu_title_text = edu_title_html | strip | replace: '<p>', '' | replace: '</p>', '' %}
                   <p>
-                    <strong>{{ edu.title }}</strong>
+                    <strong>{{ edu_title_text }}</strong>
                   </p>
                   <p1>
                     <a href="{{ edu.degree_url }}">{{ edu.degree }}</a> | {{ edu.years }}
@@ -94,7 +106,7 @@ layout: default
                 <!-- Image Column -->
                 <td style="padding-right: 20px; width: 20%; vertical-align: middle;">
                   {% if edu.image %}
-                    <img src="{{ edu.image | relative_url }}" alt="{{ edu.title }}" width="160" height="160">
+                    <img src="{{ edu.image | relative_url }}" alt="{{ edu.title }}" width="160" style="height:auto;">
                   {% else %}
 
                   {% endif %}
@@ -103,21 +115,71 @@ layout: default
                 <!-- Text Column -->
                 <td width="75%" valign="middle">
                   <p>
-                    <strong>{{ edu.title }}</strong><br>
-                    <span id="authors" style="color: gray;">{{ edu.authors }}</span><br>
-                    {% if edu.submission_url %}
-                      <i
-                        ><a href="{{ edu.submission_url }}">{{ edu.submission }}</a></i
-                      >,
+
+                    {% capture publication_title_html %}{{ edu.title | markdownify }}{% endcapture %}
+                    {% assign publication_title_text = publication_title_html | strip | replace: '<p>', '' | replace: '</p>', '' %}
+                    {% if edu.paper_url%}
+                      <strong><a href="{{ edu.paper_url }}" target="_blank">{{ publication_title_text }}<br></a></strong>
                     {% else %}
-                      <i>{{ edu.submission }}</i>,
+                      <strong>{{ publication_title_text }}</strong><br>
+
                     {% endif %}
-                    {{ edu.year }} ({{ edu.status }})
+
+                    
+                    <span id="authors" style="color: gray;">{{ edu.authors }}</span><br>
+                    {% if edu.submission %}
+                      {% if edu.submission_url %}
+                        <i
+                          ><a href="{{ edu.submission_url }}">{{ edu.submission }}</a></i
+                        >,
+                      {% else %}
+                        <i>{{ edu.submission }}</i>,
+                      {% endif %}
+                    {% endif %}
+                    {{ edu.year }}
                   </p>
+
+
                   <p style="font-size: smaller; color: gray;">
-                    PAPER / PROJECT PAGE (Coming Soon!) / CODE (Coming Soon!) /
-                    <a href="assets/pdf/RoboCulture_Poster_PRINT_FINAL.pdf" target="_blank">POSTER</a>
+                    {% capture links %}
+                      {% assign sep = '' %}
+
+                      {% if edu.paper_url or edu.paper_coming_soon %}
+                        {{ sep }}{% if edu.paper_url %}
+                          <a href="{{ edu.paper_url }}" target="_blank">PAPER</a>
+                        {% else %}
+                          PAPER (Coming Soon!)
+                        {% endif %}
+                        {% assign sep = ' / ' %}
+                      {% endif %}
+
+                      {% if edu.project_url or edu.project_coming_soon %}
+                        {{ sep }}{% if edu.project_url %}
+                          <a href="{{ edu.project_url }}" target="_blank">PROJECT PAGE</a>
+                        {% else %}
+                          PROJECT PAGE (Coming Soon!)
+                        {% endif %}
+                        {% assign sep = ' / ' %}
+                      {% endif %}
+
+                      {% if edu.code_url or edu.code_coming_soon %}
+                        {{ sep }}{% if edu.code_url %}
+                          <a href="{{ edu.code_url }}" target="_blank">CODE</a>
+                        {% else %}
+                          CODE (Coming Soon!)
+                        {% endif %}
+                        {% assign sep = ' / ' %}
+                      {% endif %}
+
+                      {% if edu.poster_url %}
+                        {{ sep }}<a href="{{ edu.poster_url }}" target="_blank">POSTER</a>
+                        {% assign sep = ' / ' %}
+                      {% endif %}
+                    {% endcapture %}
+                    {{ links | strip }}
                   </p>
+
+
                   <p1>
                     {{ edu.description }}
                   </p1>
@@ -135,46 +197,229 @@ layout: default
       if (authorsElement) {
         authorsElement.innerHTML = authorsElement.innerHTML.replace(
           /\bKevin Angers\b/g,
-          '<strong style="color: lightsteelblue;">Kevin Angers</strong>'
+          '<strong>Kevin Angers</strong>'
         );
       }
     </script>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-      <h3>Projects</h3>
-      <div class="projects-list">
-        {% for proj in site.projects %}
-          <table
-            style="padding-top: 20px; width: 100%; border: 0px; border-spacing: 0px; border-collapse: separate; margin-right: auto; margin-left: auto;"
-          >
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+      <h3>Experience</h3>
+      <div class="experience-list">
+        {%- assign experience_items = site.experience | default: site.data.experience | default: empty -%}
+        {%- assign visible_experience = experience_items | where_exp: "e", "e.hidden != true" -%}
+        {%- assign with_order_experience = visible_experience | where_exp: "e", "e.order" -%}
+        {%- assign without_order_experience = visible_experience | where_exp: "e", "e.order == nil" -%}
+        {%- assign ordered_experience = with_order_experience | sort: "order" -%}
+
+        {%- for exp in ordered_experience %}
+          <table style="padding-top:20px;width:100%;border:0;border-spacing:0;border-collapse:separate;margin:0 auto;">
             <tbody>
               <tr>
                 <!-- Image Column -->
-                <td style="padding-right: 20px; width: 20%; vertical-align: middle;">
-                  {% if proj.img %}
-                    <img src="{{ proj.img | relative_url }}" alt="{{ proj.title }}" width="160" height="160">
-                  {% else %}
-
+                <td style="padding-right:20px;width:20%;vertical-align:middle;">
+                  {% if exp.img %}
+                    <img src="{{ exp.img | relative_url }}" alt="{{ exp.title }}" style="max-width:160px;height:auto;">
                   {% endif %}
                 </td>
 
                 <!-- Text Column -->
                 <td width="75%" valign="middle">
-                  <strong>{{ proj.title }}</strong>
-                  <p style="font-size: smaller; color: gray;">
-                    {{ proj.subheading }}
-                    <a href="{{proj.project_url}}" target="_blank">{{ proj.url_text }}</a>
-                  </p>
+                  {% capture exp_title_html %}{{ exp.title | markdownify }}{% endcapture %}
+                  {% assign exp_title_text = exp_title_html | strip | replace: '<p>', '' | replace: '</p>', '' %}
+                  <strong>{{ exp_title_text }}</strong>
 
-                  <p1>
-                    {{ proj.description }}
-                  </p1>
+                  {% if exp.subheading or exp.project_url %}
+                    <p style="font-size:smaller;color:gray;margin:0;">
+                      {% if exp.subheading %}
+                        {% capture exp_subheading_html %}{{ exp.subheading | markdownify }}{% endcapture %}
+                        {{ exp_subheading_html | strip | replace: '<p>', '' | replace: '</p>', '' }}
+                      {% endif %}
+                      {% if exp.subheading and exp.project_url %}
+                        <br>
+                      {% endif %}
+                      {% if exp.project_url %}
+                        <a href="{{ exp.project_url }}" target="_blank">
+                          {% if exp.url_text %}
+                            {% capture exp_url_text_html %}{{ exp.url_text | markdownify }}{% endcapture %}
+                            {{ exp_url_text_html | strip | replace: '<p>', '' | replace: '</p>', '' }}
+                          {% else %}
+                            {{ exp.project_url }}
+                          {% endif %}
+                        </a>
+                      {% endif %}
+                    </p>
+                  {% endif %}
+
+                  {% if exp.description %}
+                    <div class="entry-description">
+                      {{ exp.description | markdownify }}
+                    </div>
+                  {% endif %}
                 </td>
               </tr>
             </tbody>
           </table>
-        {% endfor %}
+        {%- endfor -%}
+
+        {%- comment -%} Render items with no `order` after the ordered ones {%- endcomment -%}
+        {%- for exp in without_order_experience %}
+          <table style="padding-top:20px;width:100%;border:0;border-spacing:0;border-collapse:separate;margin:0 auto;">
+            <tbody>
+              <tr>
+                <td style="padding-right:20px;width:20%;vertical-align:middle;">
+                  {% if exp.img %}
+                    <img src="{{ exp.img | relative_url }}" alt="{{ exp.title }}" style="max-width:160px;height:auto;">
+                  {% endif %}
+                </td>
+                <td width="75%" valign="middle">
+                  {% capture exp_title_plain_html %}{{ exp.title | markdownify }}{% endcapture %}
+                  {% assign exp_title_plain = exp_title_plain_html | strip | replace: '<p>', '' | replace: '</p>', '' %}
+                  <strong>{{ exp_title_plain }}</strong>
+                  {% if exp.subheading or exp.project_url %}
+                    <p style="font-size:smaller;color:gray;margin:0;">
+                      {% if exp.subheading %}
+                        {% capture exp_subheading_plain %}{{ exp.subheading | markdownify }}{% endcapture %}
+                        {{ exp_subheading_plain | strip | replace: '<p>', '' | replace: '</p>', '' }}
+                      {% endif %}
+                      {% if exp.subheading and exp.project_url %}
+                        <br>
+                      {% endif %}
+                      {% if exp.project_url %}
+                        <a href="{{ exp.project_url }}" target="_blank">
+                          {% if exp.url_text %}
+                            {% capture exp_url_text_plain %}{{ exp.url_text | markdownify }}{% endcapture %}
+                            {{ exp_url_text_plain | strip | replace: '<p>', '' | replace: '</p>', '' }}
+                          {% else %}
+                            {{ exp.project_url }}
+                          {% endif %}
+                        </a>
+                      {% endif %}
+                    </p>
+                  {% endif %}
+                  {% if exp.description %}
+                    <div class="entry-description">
+                      {{ exp.description | markdownify }}
+                    </div>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        {%- endfor -%}
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+      <h3>Projects</h3>
+      <div class="projects-list">
+        {%- assign visible = site.projects | where_exp: "p", "p.hidden != true" -%}
+        {%- assign with_order = visible | where_exp: "p", "p.order" -%}
+        {%- assign without_order = visible | where_exp: "p", "p.order == nil" -%}
+
+        {%- comment -%}
+          Use natural sort so "1, 2, 10" works even if order is a string.
+          If your Jekyll/Liquid doesn’t support sort_natural, switch to: | sort: "order"
+          and make sure `order` is numeric (no quotes) in front matter.
+        {%- endcomment -%}
+        {%- assign ordered = with_order | sort: "order" -%}
+
+        {%- for proj in ordered %}
+          <table style="padding-top:20px;width:100%;border:0;border-spacing:0;border-collapse:separate;margin:0 auto;">
+            <tbody>
+              <tr>
+                <!-- Image Column -->
+                <td style="padding-right:20px;width:20%;vertical-align:middle;">
+                  {% if proj.img %}
+                    <img src="{{ proj.img | relative_url }}" alt="{{ proj.title }}" style="max-width:160px;height:auto;">
+                  {% endif %}
+                </td>
+
+                <!-- Text Column -->
+                <td width="75%" valign="middle">
+                  {% capture proj_title_html %}{{ proj.title | markdownify }}{% endcapture %}
+                  {% assign proj_title_text = proj_title_html | strip | replace: '<p>', '' | replace: '</p>', '' %}
+                  <strong>{{ proj_title_text }}</strong>
+
+                  {% if proj.subheading or proj.project_url %}
+                    <p style="font-size:smaller;color:gray;margin:0;">
+                      {% if proj.subheading %}
+                        {% capture proj_subheading_html %}{{ proj.subheading | markdownify }}{% endcapture %}
+                        {{ proj_subheading_html | strip | replace: '<p>', '' | replace: '</p>', '' }}
+                      {% endif %}
+                      {% if proj.subheading and proj.project_url %}
+                        <br>
+                      {% endif %}
+                      {% if proj.project_url %}
+                        <a href="{{ proj.project_url }}" target="_blank">
+                          {% if proj.url_text %}
+                            {% capture proj_url_text_html %}{{ proj.url_text | markdownify }}{% endcapture %}
+                            {{ proj_url_text_html | strip | replace: '<p>', '' | replace: '</p>', '' }}
+                          {% else %}
+                            {{ proj.project_url }}
+                          {% endif %}
+                        </a>
+                      {% endif %}
+                    </p>
+                  {% endif %}
+
+                  {% if proj.description %}
+                    <div class="entry-description">
+                      {{ proj.description | markdownify }}
+                    </div>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        {%- endfor -%}
+
+        {%- comment -%} Render items with no `order` after the ordered ones {%- endcomment -%}
+        {%- for proj in without_order %}
+          <table style="padding-top:20px;width:100%;border:0;border-spacing:0;border-collapse:separate;margin:0 auto;">
+            <tbody>
+              <tr>
+                <td style="padding-right:20px;width:20%;vertical-align:middle;">
+                  {% if proj.img %}
+                    <img src="{{ proj.img | relative_url }}" alt="{{ proj.title }}" style="max-width:160px;height:auto;">
+                  {% endif %}
+                </td>
+                <td width="75%" valign="middle">
+                  {% capture proj_title_plain_html %}{{ proj.title | markdownify }}{% endcapture %}
+                  {% assign proj_title_plain = proj_title_plain_html | strip | replace: '<p>', '' | replace: '</p>', '' %}
+                  <strong>{{ proj_title_plain }}</strong>
+                  {% if proj.subheading or proj.project_url %}
+                    <p style="font-size:smaller;color:gray;margin:0;">
+                      {% if proj.subheading %}
+                        {% capture proj_subheading_plain %}{{ proj.subheading | markdownify }}{% endcapture %}
+                        {{ proj_subheading_plain | strip | replace: '<p>', '' | replace: '</p>', '' }}
+                      {% endif %}
+                      {% if proj.subheading and proj.project_url %}
+                        <br>
+                      {% endif %}
+                      {% if proj.project_url %}
+                        <a href="{{ proj.project_url }}" target="_blank">
+                          {% if proj.url_text %}
+                            {% capture proj_url_text_plain %}{{ proj.url_text | markdownify }}{% endcapture %}
+                            {{ proj_url_text_plain | strip | replace: '<p>', '' | replace: '</p>', '' }}
+                          {% else %}
+                            {{ proj.project_url }}
+                          {% endif %}
+                        </a>
+                      {% endif %}
+                    </p>
+                  {% endif %}
+                  {% if proj.description %}
+                    <div class="entry-description">
+                      {{ proj.description | markdownify }}
+                    </div>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        {%- endfor -%}
       </div>
     </section>
 

@@ -1,0 +1,64 @@
+{% assign sep = '' %}
+{% capture social_links %}
+  {% if site.email %}
+    {{ sep }}<a href="mailto:{{ site.email | encode_email }}">Email</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.github_username %}
+    {{ sep }}<a href="https://github.com/{{ site.github_username }}" rel="external nofollow noopener" target="_blank">GitHub</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.linkedin_username %}
+    {{ sep }}<a href="https://www.linkedin.com/in/{{ site.linkedin_username }}" rel="external nofollow noopener" target="_blank">LinkedIn</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.x_username %}
+    {{ sep }}<a href="https://twitter.com/{{ site.x_username }}" rel="external nofollow noopener" target="_blank">X</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.mastodon_username %}
+    {{ sep }}<a rel="me" href="https://{{ site.mastodon_username }}" target="_blank">Mastodon</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.medium_username %}
+    {{ sep }}<a href="https://medium.com/@{{ site.medium_username }}" rel="external nofollow noopener" target="_blank">Medium</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.youtube_id %}
+    {{ sep }}<a href="https://youtube.com/@{{ site.youtube_id }}" rel="external nofollow noopener" target="_blank">YouTube</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.instagram_id %}
+    {{ sep }}<a href="https://instagram.com/{{ site.instagram_id }}" rel="external nofollow noopener" target="_blank">Instagram</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.facebook_id %}
+    {{ sep }}<a href="https://facebook.com/{{ site.facebook_id }}" rel="external nofollow noopener" target="_blank">Facebook</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.work_url %}
+    {{ sep }}<a href="{{ site.work_url }}" rel="external nofollow noopener" target="_blank">Work</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.website %}
+    {{ sep }}<a href="{{ site.website }}" rel="external nofollow noopener" target="_blank">Website</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+  {% if site.scholar_userid %}
+    {{ sep }}<a href="https://scholar.google.com/citations?hl=en&user={{ site.scholar_userid }}" rel="external nofollow noopener" target="_blank">Google Scholar</a>
+    {% assign sep = ' / ' %}
+  {% endif %}
+
+{% endcapture %}
+{{ social_links | strip }}
