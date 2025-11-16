@@ -40,23 +40,23 @@ layout: default
           <div class="more-info">{{ page.profile.more_info }}</div>
         {% endif %}
       </div>
-  {% endif %}
+    {% endif %}
 
-  <div class="clearfix">{{ content }}</div>
+    <div class="clearfix">{{ content }}</div>
 
-  {% capture about_social_links %}{% include social_text.liquid %}{% endcapture %}
-  {% if about_social_links contains '<a' %}
-    <div class="social about-social">
-      <div class="contact-links">{{ about_social_links | strip }}</div>
-      {% if site.contact_note %}
-        <div class="contact-note">{{ site.contact_note }}</div>
-      {% endif %}
-    </div>
-  {% endif %}
+    {% capture about_social_links %}{% include social_text.liquid %}{% endcapture %}
+    {% if about_social_links contains '<a' %}
+      <div class="social about-social">
+        <div class="contact-links">{{ about_social_links | strip }}</div>
+        {% if site.contact_note %}
+          <div class="contact-note">{{ site.contact_note }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
 
-  <!-- Education Section -->
-  <section id="education" class="education">
-    <h3>Education</h3>
+    <!-- Education Section -->
+    <section id="education" class="education">
+      <h3>Education</h3>
       <div class="education-list">
         {% for edu in site.education %}
           <table
@@ -115,17 +115,18 @@ layout: default
                 <!-- Text Column -->
                 <td width="75%" valign="middle">
                   <p>
-
                     {% capture publication_title_html %}{{ edu.title | markdownify }}{% endcapture %}
                     {% assign publication_title_text = publication_title_html | strip | replace: '<p>', '' | replace: '</p>', '' %}
-                    {% if edu.paper_url%}
-                      <strong><a href="{{ edu.paper_url }}" target="_blank">{{ publication_title_text }}<br></a></strong>
+                    {% if edu.paper_url %}
+                      <strong
+                        ><a href="{{ edu.paper_url }}" target="_blank">
+                          {{- publication_title_text -}}
+                          <br></a
+                      ></strong>
                     {% else %}
                       <strong>{{ publication_title_text }}</strong><br>
-
                     {% endif %}
 
-                    
                     <span id="authors" style="color: gray;">{{ edu.authors }}</span><br>
                     {% if edu.submission %}
                       {% if edu.submission_url %}
@@ -138,7 +139,6 @@ layout: default
                     {% endif %}
                     {{ edu.year }}
                   </p>
-
 
                   <p style="font-size: smaller; color: gray;">
                     {% capture links %}
@@ -179,7 +179,6 @@ layout: default
                     {{ links | strip }}
                   </p>
 
-
                   <p1>
                     {{ edu.description }}
                   </p1>
@@ -195,10 +194,7 @@ layout: default
       // Highlight the author "Kevin Angers"
       const authorsElement = document.getElementById('authors');
       if (authorsElement) {
-        authorsElement.innerHTML = authorsElement.innerHTML.replace(
-          /\bKevin Angers\b/g,
-          '<strong>Kevin Angers</strong>'
-        );
+        authorsElement.innerHTML = authorsElement.innerHTML.replace(/\bKevin Angers\b/g, '<strong>Kevin Angers</strong>');
       }
     </script>
 
@@ -207,10 +203,10 @@ layout: default
       <h3>Experience</h3>
       <div class="experience-list">
         {%- assign experience_items = site.experience | default: site.data.experience | default: empty -%}
-        {%- assign visible_experience = experience_items | where_exp: "e", "e.hidden != true" -%}
-        {%- assign with_order_experience = visible_experience | where_exp: "e", "e.order" -%}
-        {%- assign without_order_experience = visible_experience | where_exp: "e", "e.order == nil" -%}
-        {%- assign ordered_experience = with_order_experience | sort: "order" -%}
+        {%- assign visible_experience = experience_items | where_exp: 'e', 'e.hidden != true' -%}
+        {%- assign with_order_experience = visible_experience | where_exp: 'e', 'e.order' -%}
+        {%- assign without_order_experience = visible_experience | where_exp: 'e', 'e.order == nil' -%}
+        {%- assign ordered_experience = with_order_experience | sort: 'order' -%}
 
         {%- for exp in ordered_experience %}
           <table style="padding-top:20px;width:100%;border:0;border-spacing:0;border-collapse:separate;margin:0 auto;">
@@ -314,16 +310,16 @@ layout: default
     <section id="projects" class="projects">
       <h3>Projects</h3>
       <div class="projects-list">
-        {%- assign visible = site.projects | where_exp: "p", "p.hidden != true" -%}
-        {%- assign with_order = visible | where_exp: "p", "p.order" -%}
-        {%- assign without_order = visible | where_exp: "p", "p.order == nil" -%}
+        {%- assign visible = site.projects | where_exp: 'p', 'p.hidden != true' -%}
+        {%- assign with_order = visible | where_exp: 'p', 'p.order' -%}
+        {%- assign without_order = visible | where_exp: 'p', 'p.order == nil' -%}
 
         {%- comment -%}
           Use natural sort so "1, 2, 10" works even if order is a string.
           If your Jekyll/Liquid doesn’t support sort_natural, switch to: | sort: "order"
           and make sure `order` is numeric (no quotes) in front matter.
         {%- endcomment -%}
-        {%- assign ordered = with_order | sort: "order" -%}
+        {%- assign ordered = with_order | sort: 'order' -%}
 
         {%- for proj in ordered %}
           <table style="padding-top:20px;width:100%;border:0;border-spacing:0;border-collapse:separate;margin:0 auto;">

@@ -44,9 +44,11 @@
           {% endfor %}
 
           <!-- About page section links -->
-          {% assign about_nav_sections = "About:top|Education:education|Publications:publications|Experience:experience|Projects:projects" | split: "|" %}
+          {% assign about_nav_sections = 'About:top|Education:education|Publications:publications|Experience:experience|Projects:projects'
+            | split: '|'
+          %}
           {% for section in about_nav_sections %}
-            {% assign section_parts = section | split: ":" %}
+            {% assign section_parts = section | split: ':' %}
             {% assign section_label = section_parts[0] %}
             {% assign section_id = section_parts[1] %}
             <li class="nav-item {% if page.permalink == '/' and section_id == 'top' %}active{% endif %}">

@@ -6,7 +6,7 @@ description: I completed a sequence of ROS-based mobile robotics labs using a Tu
 
 img: assets/img/lidar-localization.gif
 
-project_url: 
+project_url:
 url_text: CODE
 
 order: 1
