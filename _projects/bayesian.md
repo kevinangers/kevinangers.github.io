@@ -6,5 +6,5 @@ description: Implemented Bayesian localization and Kalman filtering algorithms f
 
 img: assets/img/bayesian_gif.gif
 
-order: 4
+order: 5
 ---
